@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bookmarks Manager</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <div class="brand">
+          <h1>Bookmarks Manager</h1>
+        </div>
+        <div class="toolbar">
+          <label class="file-pill">
+            <input id="import-input" type="file" accept="application/json" />
+            <span>Import JSON</span>
+          </label>
+          <button id="export-btn" class="pill">Export JSON</button>
+          <button id="clear-btn" class="pill ghost">Clear Workspace</button>
+          <button id="theme-btn" class="pill ghost">Toggle Theme</button>
+        </div>
+      </header>
+
+      <section class="controls">
+        <div class="search">
+          <input id="search-input" type="search" placeholder="Search bookmarks (fuzzy). Use ' for substring." />
+        </div>
+        <div class="control-buttons">
+          <button id="duplicates-btn" class="pill ghost">Duplicates (0)</button>
+          <div id="counts" class="counts">0 bookmarks</div>
+        </div>
+      </section>
+
+      <section id="empty-state" class="empty hidden">
+        <div class="empty-card">
+          <h2>No bookmarks loaded</h2>
+          <p>Import a JSON export from the Chrome extension to start organizing.</p>
+        </div>
+      </section>
+
+      <section id="columns" class="columns"></section>
+    </div>
+
+    <template id="column-template">
+      <article class="column">
+        <header class="column-header">
+          <div class="column-title">
+            <h2></h2>
+            <span class="count chip"></span>
+          </div>
+          <div class="column-actions">
+            <button class="mini collapse-all">Collapse All</button>
+            <button class="mini expand-all">Expand All</button>
+            <button class="mini add-folder">+ Folder</button>
+            <button class="mini danger delete-folder" aria-label="Delete Folder" title="Delete Folder">×</button>
+          </div>
+        </header>
+        <div class="column-body"></div>
+      </article>
+    </template>
+
+    <template id="row-template">
+      <div class="row" draggable="true">
+        <div class="row-body">
+          <span class="level-indicator"></span>
+        </div>
+        <div class="row-actions">
+          <button class="mini rename" aria-label="Rename" title="Rename">✎</button>
+          <button class="mini toggle">Collapse</button>
+          <button class="mini add-folder">+ Folder</button>
+          <button class="mini danger delete" aria-label="Delete" title="Delete">×</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="bookmark-template">
+      <div class="bookmark">
+        <img class="favicon" alt="" />
+        <div class="bookmark-text">
+          <a class="bookmark-title" target="_blank" rel="noopener noreferrer"></a>
+          <span class="bookmark-url"></span>
+        </div>
+      </div>
+    </template>
+
+    <template id="folder-template">
+      <div class="folder">
+        <span class="folder-icon" aria-hidden="true"></span>
+        <div class="folder-title"></div>
+        <span class="folder-count"></span>
+      </div>
+    </template>
+
+    <template id="drop-template">
+      <div class="drop-zone"><span class="drop-label"></span></div>
+    </template>
+
+    <div id="tooltip" class="tooltip-card" role="tooltip" aria-hidden="true">
+      <div class="tooltip-crumb"></div>
+      <div class="tooltip-title"></div>
+      <div class="tooltip-url"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

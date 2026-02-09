@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bookmarks Manager</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <h1>Bookmarks Manager</h1>
+        <p>Export, import, or clear your Chrome bookmarks.</p>
+      </header>
+      <section class="actions">
+        <button id="export-btn" class="primary">Export Bookmarks</button>
+        <label class="file-input">
+          <input id="import-input" type="file" accept="application/json" />
+          <span>Import Bookmarks</span>
+        </label>
+        <button id="clear-btn" class="danger">Clear All Bookmarks</button>
+      </section>
+      <section class="status" aria-live="polite" id="status"></section>
+      <section class="notes">
+        <p>
+          Import replaces existing bookmarks. Export saves a JSON file that can be
+          loaded in the web app.
+        </p>
+      </section>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+:root {
+  color-scheme: light dark;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 280px;
+  background: #f6f6f7;
+  color: #111;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212;
+    color: #f2f2f2;
+  }
+}
+
+.app {
+  padding: 16px;
+  display: grid;
+  gap: 16px;
+}
+
+h1 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.actions {
+  display: grid;
+  gap: 10px;
+}
+
+button,
+.file-input {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.05s ease, background 0.2s ease;
+}
+
+button:hover,
+.file-input:hover {
+  transform: translateY(-1px);
+}
+
+button:active,
+.file-input:active {
+  transform: translateY(0);
+}
+
+.primary {
+  background: #1f6feb;
+  color: #fff;
+}
+
+.danger {
+  background: #c8192d;
+  color: #fff;
+}
+
+.file-input {
+  background: #e2e8f0;
+  color: #111;
+}
+
+@media (prefers-color-scheme: dark) {
+  .file-input {
+    background: #2a2f3a;
+    color: #f2f2f2;
+  }
+}
+
+.file-input input {
+  display: none;
+}
+
+.status {
+  min-height: 20px;
+  font-size: 12px;
+}
+
+.status.success {
+  color: #0a7b2d;
+}
+
+.status.error {
+  color: #b40014;
+}
+
+.notes {
+  font-size: 12px;
+  opacity: 0.8;
+}
