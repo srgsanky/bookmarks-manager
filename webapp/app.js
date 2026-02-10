@@ -66,6 +66,23 @@ const ensureIds = (node) => {
   }
 };
 
+const syncIdCounter = (node) => {
+  let maxId = 0;
+  const visit = (current) => {
+    if (current._id && typeof current._id === "string") {
+      const match = current._id.match(/^node-(\d+)$/);
+      if (match) {
+        maxId = Math.max(maxId, Number(match[1]));
+      }
+    }
+    if (current.children) {
+      current.children.forEach(visit);
+    }
+  };
+  visit(node);
+  idCounter = Math.max(idCounter, maxId + 1);
+};
+
 const clearTransientFlags = (node) => {
   delete node._justMoved;
   if (node.children) {
@@ -116,6 +133,7 @@ const collectBookmarks = (node, list = []) => {
 };
 
 const countBookmarks = (node) => collectBookmarks(node).length;
+
 
 const findNode = (node, id, parent = null) => {
   if (node._id === id) return { node, parent };
@@ -388,7 +406,11 @@ const renderChildren = (parent, depth, container) => {
         );
         if (!ok) return;
       }
-      removeNode(state.data, child._id);
+      const removed = removeNode(state.data, child._id);
+      if (!removed) {
+        console.warn("Delete failed for node", child);
+        return;
+      }
       saveState();
       render();
     });
@@ -454,6 +476,7 @@ const render = () => {
   }
   emptyStateEl.classList.add("hidden");
 
+  syncIdCounter(state.data);
   ensureIds(state.data);
   const { duplicates, total } = buildDuplicateSet(state.data);
   duplicatesBtn.textContent = state.duplicatesOnly
@@ -512,7 +535,11 @@ const render = () => {
         );
         if (!ok) return;
       }
-      removeNode(state.data, folder._id);
+      const removed = removeNode(state.data, folder._id);
+      if (!removed) {
+        console.warn("Top-level delete failed for node", folder);
+        return;
+      }
       saveState();
       render();
     });
@@ -600,6 +627,10 @@ const attachDropHandlers = (dropEl, parentId, index) => {
     dropEl.classList.remove("active");
     const draggedId = event.dataTransfer.getData("text/plain");
     if (!draggedId) return;
+    const parentNode = findNode(state.data, parentId)?.node;
+    if (parentNode && parentNode.children) {
+      parentNode._collapsed = false;
+    }
     moveNode(state.data, draggedId, parentId, index);
   });
 };
@@ -619,6 +650,7 @@ const initialize = () => {
   if (data) {
     clearTransientFlags(data);
     state.data = data;
+    syncIdCounter(state.data);
   }
 
   render();
@@ -636,6 +668,7 @@ importInput.addEventListener("change", async (event) => {
       alert("Invalid bookmarks JSON.");
       return;
     }
+    syncIdCounter(root);
     ensureIds(root);
     state.data = root;
     saveState();
